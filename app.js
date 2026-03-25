@@ -12,7 +12,8 @@ addWorkoutBtn.addEventListener('click', function() {
   const sets = parseInt(numberOfSets.value);
   const reps = numberOfReps.value.trim();
 
-  if (!workout || !sets || !reps){
+  //input validation shit
+  if (!workout || isNaN(sets) || !reps){
     alert("Please fill in all fields");
     return;
   }
@@ -21,22 +22,67 @@ addWorkoutBtn.addEventListener('click', function() {
     alert("Sets must be between 1 and 10");
     return;
   }
-
+  // checks if reps is in the format of "6-8" or "8-12" and that the numbers are between 1 and 100
+  // regex shit
   const repPatterns = /^(\d+)(-\d+)?$/;
   if (!repPatterns.test(reps)){
     alert("Reps must be like '6-8' or '8-12'");
     return;
   }
 
-  const workoutPlan = {
-    name: workout,
-    sets: sets,
-    reps: reps
-  };
+  const editId = addWorkoutBtn.dataset.editId;
 
-  workouts.push(workoutPlan);
+  if (editId) {
+    fetch('edit_workout.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `id=${editId}&workout=${workout}&sets=${sets}&reps=${reps}`
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
 
-  displayWorkouts(); 
+      const index = workouts.findIndex(w => w.id == editId);
+
+      if (index !== -1) {
+        workouts[index].name = workout;
+        workouts[index].sets = sets;
+        workouts[index].reps = reps;
+      }
+
+      displayWorkouts();
+
+   
+      delete addWorkoutBtn.dataset.editId;
+    });
+
+  } else {
+
+    fetch('add_workout.php', {
+      method: 'POST',
+      headers: {
+        //data format for php to read as form data
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `workout=${workout}&sets=${sets}&reps=${reps}`
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+
+      const workoutPlan = {
+        id: data,
+        name: workout,
+        sets: sets,
+        reps: reps
+      };
+
+      workouts.push(workoutPlan);
+      displayWorkouts();
+    });
+  }
 
   workoutName.value = '';
   numberOfSets.value = '';
@@ -44,25 +90,23 @@ addWorkoutBtn.addEventListener('click', function() {
 });
 
 
+
 function displayWorkouts () {
   workoutList.innerHTML = '';
 
-  workouts.forEach(function(workout, index){
+  workouts.forEach(function(workout){
+
     const workoutItem = document.createElement('div');
 
     workoutItem.textContent = 
       workout.name + " - " + workout.sets + " sets of " + workout.reps + " reps";
-
-    workoutList.appendChild(workoutItem);
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
 
     deleteBtn.addEventListener('click', function(){
       deleteWorkout(workout.id);
-
     });
-
 
     const editBtn = document.createElement('button');
     editBtn.textContent = 'Edit';
@@ -71,14 +115,12 @@ function displayWorkouts () {
       editWorkout(workout.id);
     });
 
-
-
     workoutItem.appendChild(deleteBtn);
     workoutItem.appendChild(editBtn);
     workoutList.appendChild(workoutItem);
-
   });
 }
+
 
 function deleteWorkout(id){
   const index = workouts.findIndex(function(workout){
@@ -91,27 +133,18 @@ function deleteWorkout(id){
   }
 }
 
+
+
 function editWorkout(id){
-  const index = workouts.findIndex(function(workout){
-    return workout.id === id;
-  });
+  const workout = workouts.find(w => w.id == id);
 
-  if (index === -1) return;
+  if (!workout) return;
 
-  const newName = prompt("Enter new workout name:", workouts[index].name);
-  const newSets = prompt("Enter new number of sets:", workouts[index].sets);
-  const newReps = prompt("Enter new reps pattern:", workouts[index].reps);
-
-  if(!newName || !newSets || !newReps){
-    alert("Please fill in all fields");
-    return;
-  }
-
-  workouts[index].name = newName;
-  workouts[index].sets = parseInt(newSets);
-  workouts[index].reps = newReps;
-
-  displayWorkouts();
+ 
+  workoutName.value = workout.name;
+  numberOfSets.value = workout.sets;
+  numberOfReps.value = workout.reps;
 
 
+  addWorkoutBtn.dataset.editId = id;
 }
