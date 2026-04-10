@@ -4,10 +4,10 @@ include "dbconn.php";
 
 if($_SERVER ["REQUEST_METHOD"] == "POST"){
 
-$workout = $_POST["workout"];
-$sets = $_POST["sets"];
-$reps = $_POST["reps"];
-$weight = $_POST["weight"];
+$workout = isset($_POST["workout"]) ? $_POST["workout"] : '';
+$sets = isset($_POST["sets"]) ? $_POST["sets"] : '';
+$reps = isset($_POST["reps"]) ? $_POST["reps"] : '';
+$weight = isset($_POST["weight"]) ? $_POST["weight"] : '';
 
 $sql = "INSERT INTO workouts (workout, sets, reps, weight) VALUES ('$workout', '$sets', '$reps', '$weight')";
 
