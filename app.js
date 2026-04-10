@@ -173,8 +173,6 @@ function deleteWorkout(id){
   })
   .then(response => response.text())
   .then(data => {
-    console.log('Delete response:', data);
-   
     if (data.includes('successfully')) {
       const index = workouts.findIndex(function(workout){
         return workout.id == id;
@@ -185,7 +183,7 @@ function deleteWorkout(id){
         displayWorkouts();
       }
     } else {
-      alert('Error deleting workout: ' + data);
+      alert('Error: ' + data);
     }
   })
   .catch(error => {
