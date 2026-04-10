@@ -122,6 +122,7 @@ function displayWorkouts () {
 }
 
 
+
 function deleteWorkout(id){
   const index = workouts.findIndex(function(workout){
     return workout.id === id;
