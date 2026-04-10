@@ -123,6 +123,8 @@ addWorkoutBtn.addEventListener('click', function() {
   numberOfReps.value = '';
   weightUsed.value = '';
 
+});
+
 
 
 function displayWorkouts () {
