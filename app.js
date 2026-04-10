@@ -105,8 +105,12 @@ addWorkoutBtn.addEventListener('click', function() {
     .then(data => {
       console.log(data);
 
+      // Extract the ID from the response (it comes after "Workout added successfully")
+      const idMatch = data.match(/(\d+)$/);
+      const newId = idMatch ? idMatch[1] : null;
+
       const workoutPlan = {
-        id: data,
+        id: newId,
         name: workout,
         sets: sets,
         reps: reps,
@@ -169,15 +173,19 @@ function deleteWorkout(id){
   })
   .then(response => response.text())
   .then(data => {
-    console.log(data);
+    console.log('Delete response:', data);
    
-    const index = workouts.findIndex(function(workout){
-      return workout.id == id;
-    });
+    if (data.includes('successfully')) {
+      const index = workouts.findIndex(function(workout){
+        return workout.id == id;
+      });
 
-    if (index !== -1){
-      workouts.splice(index, 1);
-      displayWorkouts();
+      if (index !== -1){
+        workouts.splice(index, 1);
+        displayWorkouts();
+      }
+    } else {
+      alert('Error deleting workout: ' + data);
     }
   })
   .catch(error => {

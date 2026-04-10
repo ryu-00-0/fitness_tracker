@@ -26,23 +26,8 @@
     <div id="workout-items"></div> 
   </div>
 
-<?php
-include 'dbconn.php';
-
-$query = "SELECT * FROM workouts";
-$result = mysqli_query($conn, $query);
-
-if ($result && $result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "<div>";
-        echo $row['workout'] . " workout " . $row['sets'] . " sets " . $row['reps'] . " reps " . $row['weight'] . " weight";
-        echo "</div>";
-    }
-} else {
-    echo "No workouts found.";
-}
-?>
   <script src="app.js"></script>
+
 </body>
 
 </html>
