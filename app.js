@@ -1,7 +1,7 @@
 const workoutName = document.getElementById('workout-name');
 const numberOfSets = document.getElementById('number-of-sets');
 const numberOfReps = document.getElementById('number-of-reps');
-const weightUsed = document.getElementById('weight-used');
+const weightInput = document.getElementById('weight');
 const addWorkoutBtn = document.getElementById('add-workout-btn');
 const workoutList = document.getElementById('workout-list');
 
@@ -42,7 +42,7 @@ addWorkoutBtn.addEventListener('click', function() {
   const workout = workoutName.value.trim();
   const sets = parseInt(numberOfSets.value);
   const reps = numberOfReps.value.trim();
-  const weight = weightUsed.value.trim();
+  const weight = weightInput.value.trim();
 
   //input validation shit
   if (!workout || isNaN(sets) || !reps){
@@ -120,12 +120,13 @@ addWorkoutBtn.addEventListener('click', function() {
       workouts.push(workoutPlan);
       displayWorkouts();
     });
+
   }
 
   workoutName.value = '';
   numberOfSets.value = '';
   numberOfReps.value = '';
-  weightUsed.value = '';
+  weightInput.value = '';
 
 });
 
@@ -139,7 +140,7 @@ function displayWorkouts () {
     const workoutItem = document.createElement('div');
 
     workoutItem.textContent = 
-      workout.name + " - " + workout.sets + " sets of " + workout.reps + " reps" + (workout.weight ? " @ " + workout.weight : "");
+      workout.name + " - " + workout.sets + " sets of " + workout.reps + " reps" + "weight" + workout.weight;
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
@@ -159,6 +160,8 @@ function displayWorkouts () {
     workoutItem.appendChild(editBtn);
     workoutList.appendChild(workoutItem);
   });
+
+ 
 }
 
 
@@ -203,7 +206,7 @@ function editWorkout(id){
   workoutName.value = workout.name;
   numberOfSets.value = workout.sets;
   numberOfReps.value = workout.reps;
-  weightUsed.value = workout.weight || '';
+  weightInput.value = workout.weight || '';
 
 
   addWorkoutBtn.dataset.editId = id;
