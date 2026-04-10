@@ -1,16 +1,48 @@
 const workoutName = document.getElementById('workout-name');
 const numberOfSets = document.getElementById('number-of-sets');
 const numberOfReps = document.getElementById('number-of-reps');
+const weightUsed = document.getElementById('weight-used');
 const addWorkoutBtn = document.getElementById('add-workout-btn');
 const workoutList = document.getElementById('workout-list');
 
 const workouts = [];
+
+// Load existing workouts when page loads
+window.addEventListener('load', function() {
+  loadWorkouts();
+});
+
+function loadWorkouts() {
+  fetch('get_workout.php')
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        console.error('Error loading workouts:', data.error);
+        return;
+      }
+      workouts.length = 0; // Clear array
+      data.forEach(workout => {
+        workouts.push({
+          id: workout.id,
+          name: workout.workout,
+          sets: workout.sets,
+          reps: workout.reps,
+          weight: workout.weight
+        });
+      });
+      displayWorkouts();
+    })
+    .catch(error => {
+      console.error('Error loading workouts:', error);
+    });
+}
 
 addWorkoutBtn.addEventListener('click', function() {
 
   const workout = workoutName.value.trim();
   const sets = parseInt(numberOfSets.value);
   const reps = numberOfReps.value.trim();
+  const weight = weightUsed.value.trim();
 
   //input validation shit
   if (!workout || isNaN(sets) || !reps){
@@ -38,7 +70,7 @@ addWorkoutBtn.addEventListener('click', function() {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: `id=${editId}&workout=${workout}&sets=${sets}&reps=${reps}`
+      body: `id=${editId}&workout=${workout}&sets=${sets}&reps=${reps}&weight=${weight}`
     })
     .then(response => response.text())
     .then(data => {
@@ -50,6 +82,7 @@ addWorkoutBtn.addEventListener('click', function() {
         workouts[index].name = workout;
         workouts[index].sets = sets;
         workouts[index].reps = reps;
+        workouts[index].weight = weight;
       }
 
       displayWorkouts();
@@ -66,7 +99,7 @@ addWorkoutBtn.addEventListener('click', function() {
         //data format for php to read as form data
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: `workout=${workout}&sets=${sets}&reps=${reps}`
+      body: `workout=${workout}&sets=${sets}&reps=${reps}&weight=${weight}`
     })
     .then(response => response.text())
     .then(data => {
@@ -76,7 +109,8 @@ addWorkoutBtn.addEventListener('click', function() {
         id: data,
         name: workout,
         sets: sets,
-        reps: reps
+        reps: reps,
+        weight: weight
       };
 
       workouts.push(workoutPlan);
@@ -87,7 +121,7 @@ addWorkoutBtn.addEventListener('click', function() {
   workoutName.value = '';
   numberOfSets.value = '';
   numberOfReps.value = '';
-});
+  weightUsed.value = '';
 
 
 
@@ -99,7 +133,7 @@ function displayWorkouts () {
     const workoutItem = document.createElement('div');
 
     workoutItem.textContent = 
-      workout.name + " - " + workout.sets + " sets of " + workout.reps + " reps";
+      workout.name + " - " + workout.sets + " sets of " + workout.reps + " reps" + (workout.weight ? " @ " + workout.weight : "");
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
@@ -161,6 +195,7 @@ function editWorkout(id){
   workoutName.value = workout.name;
   numberOfSets.value = workout.sets;
   numberOfReps.value = workout.reps;
+  weightUsed.value = workout.weight || '';
 
 
   addWorkoutBtn.dataset.editId = id;
