@@ -13,15 +13,6 @@
 
 <body>
 
-<<<<<<< HEAD
-  <div id="workout-input">
-    <input type="text" id="workout-name" name="workout" placeholder="Enter workout name" required>
-    <input type="number" id="number-of-sets" name="sets" placeholder="Enter number of sets" required>
-    <input type="text" id="number-of-reps" name="reps" placeholder="Enter number of reps" required>
-    <input type="text" id="weight" name="weight" placeholder="Enter weight used">
-    <button id="add-workout-btn">Add workout</button>
-  </div>
-=======
   <div id="app-wrapper">
 
     <h1 id="app-title">💪 Workout Tracker</h1>
@@ -37,7 +28,6 @@
     <div id="workout-list">
       <div id="workout-items"></div>
     </div>
->>>>>>> 16cf4163d40e0e4eae1a04109d3709ece71bb4c5
 
   </div>
 

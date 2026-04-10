@@ -1,7 +1,7 @@
 const workoutName = document.getElementById('workout-name');
 const numberOfSets = document.getElementById('number-of-sets');
 const numberOfReps = document.getElementById('number-of-reps');
-const weightInput = document.getElementById('weight');
+const weightUsed = document.getElementById('weight-used');
 const addWorkoutBtn = document.getElementById('add-workout-btn');
 const workoutItems = document.getElementById('workout-items');
 
@@ -60,7 +60,7 @@ addWorkoutBtn.addEventListener('click', function () {
   const workout = workoutName.value.trim();
   const sets = parseInt(numberOfSets.value);
   const reps = numberOfReps.value.trim();
-  const weight = weightInput.value.trim();
+  const weight = weightUsed.value.trim();
 
   // Clear previous error states
   [workoutName, numberOfSets, numberOfReps, weightUsed].forEach(el => el.classList.remove('error'));
@@ -124,24 +124,6 @@ addWorkoutBtn.addEventListener('click', function () {
         const idMatch = data.match(/(\d+)$/);
         const newId = idMatch ? idMatch[1] : null;
 
-<<<<<<< HEAD
-      // Extract the ID from the response (it comes after "Workout added successfully")
-      const idMatch = data.match(/(\d+)$/);
-      const newId = idMatch ? idMatch[1] : null;
-
-      const workoutPlan = {
-        id: newId,
-        name: workout,
-        sets: sets,
-        reps: reps,
-        weight: weight
-      };
-
-      workouts.push(workoutPlan);
-      displayWorkouts();
-    });
-
-=======
         workouts.push({
           id: newId,
           name: workout,
@@ -154,18 +136,12 @@ addWorkoutBtn.addEventListener('click', function () {
         paletteIdx++;
         displayWorkouts();
       });
->>>>>>> 16cf4163d40e0e4eae1a04109d3709ece71bb4c5
   }
 
   workoutName.value = '';
   numberOfSets.value = '';
   numberOfReps.value = '';
-<<<<<<< HEAD
-  weightInput.value = '';
-
-=======
   weightUsed.value = '';
->>>>>>> 16cf4163d40e0e4eae1a04109d3709ece71bb4c5
 });
 
 
@@ -208,17 +184,7 @@ function displayWorkouts() {
       </div>
     `;
 
-<<<<<<< HEAD
-    workoutItem.textContent = 
-      workout.name + " - " + workout.sets + " sets of " + workout.reps + " reps" + "weight" + workout.weight;
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-
-    deleteBtn.addEventListener('click', function(){
-=======
     note.querySelector('.note-close').addEventListener('click', function () {
->>>>>>> 16cf4163d40e0e4eae1a04109d3709ece71bb4c5
       deleteWorkout(workout.id);
     });
 
@@ -232,8 +198,6 @@ function displayWorkouts() {
 
     workoutItems.appendChild(note);
   });
-
- 
 }
 
 
@@ -269,12 +233,7 @@ function editWorkout(id) {
   workoutName.value = workout.name;
   numberOfSets.value = workout.sets;
   numberOfReps.value = workout.reps;
-<<<<<<< HEAD
-  weightInput.value = workout.weight || '';
-
-=======
   weightUsed.value = workout.weight;
->>>>>>> 16cf4163d40e0e4eae1a04109d3709ece71bb4c5
 
   addWorkoutBtn.dataset.editId = id;
   addWorkoutBtn.textContent = 'Save changes';
