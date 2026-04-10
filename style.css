@@ -1,0 +1,206 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0ede6;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+#app-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#app-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Input form ── */
+#workout-input {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+#workout-input input {
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+  background: #fafafa;
+  color: #333;
+}
+
+#workout-input input:focus {
+  border-color: #888;
+  background: #fff;
+}
+
+#workout-input input.error {
+  border-color: #e24b4a;
+}
+
+#add-workout-btn {
+  grid-column: 1 / -1;
+  padding: 11px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+#add-workout-btn:hover {
+  background: #555;
+}
+
+#add-workout-btn.editing {
+  background: #185fa5;
+}
+
+/* ── Notes grid ── */
+#workout-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 18px;
+}
+
+/* ── Individual sticky note ── */
+.note-card {
+  border-radius: 6px;
+  padding: 1rem;
+  min-height: 175px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 3px 3px 10px rgba(0,0,0,0.12);
+}
+
+.note-card:hover {
+  transform: rotate(0deg) scale(1.04) !important;
+  box-shadow: 6px 6px 18px rgba(0,0,0,0.18);
+  z-index: 10;
+}
+
+.note-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding-right: 20px;
+}
+
+.note-divider {
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  margin: 2px 0 8px;
+}
+
+.note-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1;
+}
+
+.note-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.stat-unit {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+/* ── Note action buttons ── */
+.note-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.note-actions button {
+  flex: 1;
+  padding: 5px 0;
+  border: 1.5px solid rgba(0,0,0,0.2);
+  border-radius: 6px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.note-actions button:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.delete-btn {
+  color: inherit;
+}
+
+.edit-btn {
+  color: inherit;
+}
+
+/* ── Delete X button top-right ── */
+.note-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.4;
+  line-height: 1;
+  padding: 0;
+}
+
+.note-close:hover {
+  opacity: 0.9;
+}
+
+/* ── Empty state ── */
+#empty-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 2rem 0;
+}
