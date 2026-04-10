@@ -124,14 +124,30 @@ function displayWorkouts () {
 
 
 function deleteWorkout(id){
-  const index = workouts.findIndex(function(workout){
-    return workout.id === id;
-  });
+  fetch('delete_workout.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `id=${id}`
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+   
+    const index = workouts.findIndex(function(workout){
+      return workout.id == id;
+    });
 
-  if (index !== -1){
-    workouts.splice(index, 1);
-    displayWorkouts();
-  }
+    if (index !== -1){
+      workouts.splice(index, 1);
+      displayWorkouts();
+    }
+  })
+  .catch(error => {
+    console.error('Error deleting workout:', error);
+    alert('Error deleting workout');
+  });
 }
 
 
